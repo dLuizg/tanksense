@@ -36,16 +36,16 @@ class Menu {
       print("""
 ==================== MENU PRINCIPAL ====================
 
-1 - Empresas
-2 - Locais
-3 - Dispositivos
-4 - Sensores
-5 - Tanques
-6 - Usuários
-7 - Leituras (Sincronização e Listagem)
-8 - Produção (Processamento e Listagem)
+1 - 🏭 Empresas
+2 - 🏠 Locais
+3 - ⚙️ Dispositivos
+4 - 📡 Sensores
+5 - 🛢️ Tanques
+6 - 👤 Usuários
+7 - 📜 Leituras (Sincronização e Listagem)
+8 - ✏️ Produção (Processamento e Listagem)
 
-0 - Sair
+0 - ✖️ Sair
 """);
 
       stdout.write("Escolha uma opção: ");
@@ -93,9 +93,9 @@ class Menu {
     _limparTela();
     print("""
 -------- EMPRESAS --------
-1 - Cadastrar Empresa
-2 - Listar Empresas
-0 - Voltar
+1 - 📝 Cadastrar Empresa
+2 - 📋 Listar Empresas
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
@@ -113,9 +113,9 @@ class Menu {
     _limparTela();
     print("""
 -------- LOCAIS --------
-1 - Cadastrar Local
-2 - Listar Locais
-0 - Voltar
+1 - 📝 Cadastrar Local
+2 - 📋 Listar Locais
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
@@ -133,9 +133,9 @@ class Menu {
     _limparTela();
     print("""
 -------- DISPOSITIVOS --------
-1 - Cadastrar Dispositivo
-2 - Listar Dispositivos
-0 - Voltar
+1 - 📝 Cadastrar Dispositivo
+2 - 📋 Listar Dispositivos
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
@@ -153,9 +153,9 @@ class Menu {
     _limparTela();
     print("""
 -------- SENSORES --------
-1 - Cadastrar Sensor
-2 - Listar Sensores
-0 - Voltar
+1 - 📝 Cadastrar Sensor
+2 - 📋 Listar Sensores
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
@@ -173,9 +173,9 @@ class Menu {
     _limparTela();
     print("""
 -------- TANQUES --------
-1 - Cadastrar Tanque
-2 - Listar Tanques
-0 - Voltar
+1 - 📝 Cadastrar Tanque
+2 - 📋 Listar Tanques
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
@@ -193,9 +193,9 @@ class Menu {
     _limparTela();
     print("""
 -------- USUÁRIOS --------
-1 - Cadastrar Usuário
-2 - Listar Usuários
-0 - Voltar
+1 - 📝 Cadastrar Usuário
+2 - 📋 Listar Usuários
+0 - 🔙 Voltar
 """);
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
