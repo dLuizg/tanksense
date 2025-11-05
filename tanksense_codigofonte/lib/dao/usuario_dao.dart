@@ -1,6 +1,6 @@
 // lib/dao/usuario_dao.dart
-import '../database_connection.dart';
-import '../usuario.dart';
+import '../models/database_connection.dart';
+import '../models/usuario.dart';
 
 class UsuarioDao {
   final DatabaseConnection db;

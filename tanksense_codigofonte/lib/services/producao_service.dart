@@ -1,7 +1,7 @@
 // lib/services/producao_service.dart
-import '../producao.dart';
-import '../leitura.dart';
-import '../database_connection.dart';
+import '../models/producao.dart';
+import '../models/leitura.dart';
+import '../models/database_connection.dart';
 import '../dao/producao_dao.dart';
 
 class ProducaoService {

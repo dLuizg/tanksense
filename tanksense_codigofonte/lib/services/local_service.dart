@@ -1,5 +1,5 @@
-import '../local.dart';
-import '../database_connection.dart';
+import '../models/local.dart';
+import '../models/database_connection.dart';
 import '../dao/local_dao.dart';
 
 class LocalService {

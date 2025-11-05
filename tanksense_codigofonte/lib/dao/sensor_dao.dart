@@ -1,6 +1,6 @@
 // lib/dao/sensor_dao.dart
-import '../database_connection.dart';
-import '../sensor.dart';
+import '../models/database_connection.dart';
+import '../models/sensor.dart';
 
 class SensorDao {
   final DatabaseConnection db;

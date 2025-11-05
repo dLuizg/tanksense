@@ -1,6 +1,6 @@
 import 'base_dao.dart';
-import '../database_connection.dart';
-import '../empresa.dart';
+import '../models/database_connection.dart';
+import '../models/empresa.dart';
 
 class EmpresaDao extends BaseDAO<Empresa> {
   EmpresaDao(DatabaseConnection db) : super(db, 'empresa', 'idEmpresa');

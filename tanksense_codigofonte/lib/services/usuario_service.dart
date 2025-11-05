@@ -1,6 +1,6 @@
 // lib/services/usuario_service.dart
-import '../usuario.dart';
-import '../database_connection.dart';
+import '../models/usuario.dart';
+import '../models/database_connection.dart';
 import '../dao/usuario_dao.dart';
 
 class UsuarioService {

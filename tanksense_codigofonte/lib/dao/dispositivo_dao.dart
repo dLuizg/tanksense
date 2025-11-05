@@ -1,6 +1,6 @@
 // lib/dao/dispositivo_dao.dart
-import '../database_connection.dart';
-import '../dispositivo.dart';
+import '../models/database_connection.dart';
+import '../models/dispositivo.dart';
 
 class DispositivoDao {
   final DatabaseConnection db;

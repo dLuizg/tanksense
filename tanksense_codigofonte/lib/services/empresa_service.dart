@@ -1,5 +1,5 @@
-import '../empresa.dart';
-import '../database_connection.dart';
+import '../models/empresa.dart';
+import '../models/database_connection.dart';
 import '../dao/empresa_dao.dart';
 
 class EmpresaService {

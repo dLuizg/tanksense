@@ -1,9 +1,9 @@
 // bin/main.dart
-import 'package:tanksense/database_config.dart';
-import 'package:tanksense/database_connection.dart';
-import 'package:tanksense/service_locator.dart';
-import 'package:tanksense/menu.dart';
-import 'package:tanksense/database_setup.dart'; // <-- 1. IMPORTE A NOVA CLASSE
+import 'package:tanksense/models/database_config.dart';
+import 'package:tanksense/models/database_connection.dart';
+import 'package:tanksense/models/service_locator.dart';
+import 'package:tanksense/models/menu.dart';
+import 'package:tanksense/models/database_setup.dart'; // <-- 1. IMPORTE A NOVA CLASSE
 
 Future<void> main() async {
   final db = DatabaseConnection(databaseConfig);

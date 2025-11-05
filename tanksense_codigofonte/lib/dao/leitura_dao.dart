@@ -1,6 +1,6 @@
 // lib/dao/leitura_dao.dart
-import '../database_connection.dart';
-import '../leitura.dart';
+import '../models/database_connection.dart';
+import '../models/leitura.dart';
 
 class LeituraDao {
   final DatabaseConnection db;

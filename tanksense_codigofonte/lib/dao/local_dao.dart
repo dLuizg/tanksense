@@ -1,5 +1,5 @@
-import '../database_connection.dart';
-import '../local.dart';
+import '../models/database_connection.dart';
+import '../models/local.dart';
 import 'base_dao.dart';
 
 class LocalDao extends BaseDAO<Local> {

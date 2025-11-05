@@ -1,10 +1,10 @@
 // lib/controllers/data_controller.dart
 
-import '../leitura.dart';
-import '../producao.dart';
+import '../models/leitura.dart';
+import '../models/producao.dart';
 import '../services/leitura_service.dart';
 import '../services/producao_service.dart';
-import '../service_locator.dart';
+import '../models/service_locator.dart';
 
 class DataController {
   // ... (injeção de dependência - sem mudanças) ...

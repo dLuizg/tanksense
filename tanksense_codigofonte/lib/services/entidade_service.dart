@@ -1,14 +1,14 @@
 // services/entidade_service.dart
-import '../database_connection.dart';
-import '../entidade_base.dart';
-import '../empresa.dart';
-import '../local.dart';
-import '../dispositivo.dart';
-import '../sensor.dart';
-import '../tanque.dart';
-import '../usuario.dart';
-import '../leitura.dart';
-import '../producao.dart';
+import '../models/database_connection.dart';
+import '../models/entidade_base.dart';
+import '../models/empresa.dart';
+import '../models/local.dart';
+import '../models/dispositivo.dart';
+import '../models/sensor.dart';
+import '../models/tanque.dart';
+import '../models/usuario.dart';
+import '../models/leitura.dart';
+import '../models/producao.dart';
 
 class _BaseService<T extends EntidadeBase> {
   final DatabaseConnection db;

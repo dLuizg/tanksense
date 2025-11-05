@@ -1,8 +1,8 @@
 // lib/services/leitura_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../leitura.dart';
-import '../database_connection.dart';
+import '../models/leitura.dart';
+import '../models/database_connection.dart';
 import '../dao/leitura_dao.dart';
 
 class LeituraService {

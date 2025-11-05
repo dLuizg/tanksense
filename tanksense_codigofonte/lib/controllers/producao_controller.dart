@@ -1,7 +1,7 @@
 // lib/controllers/producao_controller.dart
 
-import '../producao.dart';
-import '../leitura.dart';
+import '../models/producao.dart';
+import '../models/leitura.dart';
 import '../services/producao_service.dart';
 
 class ProducaoController {

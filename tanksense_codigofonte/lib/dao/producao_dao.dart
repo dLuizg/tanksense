@@ -1,6 +1,6 @@
 // lib/dao/producao_dao.dart
-import '../database_connection.dart';
-import '../producao.dart';
+import '../models/database_connection.dart';
+import '../models/producao.dart';
 import 'base_dao.dart';
 
 class ProducaoDao extends BaseDAO<Producao> {

@@ -1,7 +1,7 @@
 // lib/controllers/gestao_organizacional_controller.dart
-import '../empresa.dart';
-import '../local.dart';
-import '../usuario.dart';
+import '../models/empresa.dart';
+import '../models/local.dart';
+import '../models/usuario.dart';
 import '../services/empresa_service.dart';
 import '../services/local_service.dart';
 import '../services/usuario_service.dart';

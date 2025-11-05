@@ -8,7 +8,7 @@ import 'sensor.dart';
 import 'tanque.dart';
 import 'usuario.dart';
 import 'producao.dart';
-import 'controllers/data_controller.dart'; // <-- 1. IMPORTAR O CONTROLLER
+import '../controllers/data_controller.dart'; // <-- 1. IMPORTAR O CONTROLLER
 
 class Menu {
   // --- MODIFICAÇÃO (POO) ---
@@ -300,7 +300,9 @@ class Menu {
     // ✅ CORREÇÃO
     final lista = await _empresaService.listar(); // <-- Esta linha está CORRETA
     print("\n--- Empresas ---");
-    for (var e in lista) print("${e.id} - ${e.nome}");
+    for (var e in lista) {
+      print("${e.id} - ${e.nome}");
+    }
     await _pausar();
   }
 

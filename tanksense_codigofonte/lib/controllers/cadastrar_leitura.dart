@@ -1,5 +1,5 @@
 // lib/controllers/leitura_controller.dart
-import '../leitura.dart';
+import '../models/leitura.dart';
 import '../services/leitura_service.dart';
 import 'dart:async'; // Necessário para DateTime
 

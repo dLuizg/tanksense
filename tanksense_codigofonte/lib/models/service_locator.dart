@@ -1,24 +1,24 @@
 import 'database_connection.dart';
 
 // DAOs
-import 'dao/empresa_dao.dart';
-import 'dao/local_dao.dart';
-import 'dao/dispositivo_dao.dart';
-import 'dao/sensor_dao.dart';
-import 'dao/tanque_dao.dart';
-import 'dao/usuario_dao.dart';
-import 'dao/leitura_dao.dart';
-import 'dao/producao_dao.dart';
+import '../dao/empresa_dao.dart';
+import '../dao/local_dao.dart';
+import '../dao/dispositivo_dao.dart';
+import '../dao/sensor_dao.dart';
+import '../dao/tanque_dao.dart';
+import '../dao/usuario_dao.dart';
+import '../dao/leitura_dao.dart';
+import '../dao/producao_dao.dart';
 
 // Services
-import 'services/empresa_service.dart';
-import 'services/local_service.dart';
-import 'services/dispositivo_service.dart';
-import 'services/sensor_service.dart';
-import 'services/tanque_service.dart';
-import 'services/usuario_service.dart';
-import 'services/leitura_service.dart';
-import 'services/producao_service.dart';
+import '../services/empresa_service.dart';
+import '../services/local_service.dart';
+import '../services/dispositivo_service.dart';
+import '../services/sensor_service.dart';
+import '../services/tanque_service.dart';
+import '../services/usuario_service.dart';
+import '../services/leitura_service.dart';
+import '../services/producao_service.dart';
 
 /// ---------------------------------------------------------
 ///  SERVICE LOCATOR (Singleton)

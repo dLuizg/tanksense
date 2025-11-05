@@ -1,6 +1,6 @@
 // lib/dao/tanque_dao.dart
-import '../database_connection.dart';
-import '../tanque.dart';
+import '../models/database_connection.dart';
+import '../models/tanque.dart';
 
 class TanqueDao {
   final DatabaseConnection db;

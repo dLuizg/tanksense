@@ -1,5 +1,5 @@
-import '../database_connection.dart';
-import '../entidade_base.dart';
+import '../models/database_connection.dart';
+import '../models/entidade_base.dart';
 
 abstract class BaseDAO<T extends EntidadeBase> {
   final DatabaseConnection db;

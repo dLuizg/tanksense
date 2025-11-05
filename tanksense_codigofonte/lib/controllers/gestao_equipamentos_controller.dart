@@ -1,7 +1,7 @@
 // lib/controllers/gestao_equipamentos_controller.dart
-import '../tanque.dart';
-import '../dispositivo.dart';
-import '../sensor.dart';
+import '../models/tanque.dart';
+import '../models/dispositivo.dart';
+import '../models/sensor.dart';
 import '../services/tanque_service.dart';
 import '../services/dispositivo_service.dart';
 import '../services/sensor_service.dart';
