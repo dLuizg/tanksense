@@ -69,14 +69,25 @@ class Producao extends EntidadeBase {
 
   /// Construtor Factory para criar a partir de um Map (vindo do banco)
   factory Producao.fromMap(Map<String, dynamic> map) {
+    // --- INÍCIO DA CORREÇÃO ---
+    // Tornamos o construtor defensivo contra valores NULL do banco.
+
     return Producao(
-      map['idProducao'] as int,
-      map['sensor_idSensor'] as int,
-      map['timestamp'] as DateTime,
-      (map['quantidade'] as num).toDouble(),
-      map['tipoRegistro'] ?? 'N/A',
-      map['detalhes'] ?? 'N/A',
+      // CORREÇÃO: Lida com IDs nulos (define 0 como padrão)
+      (map['idProducao'] as num?)?.toInt() ?? 0,
+      (map['sensor_idSensor'] as num?)?.toInt() ?? 0,
+
+      // CORREÇÃO: Lida com Timestamps nulos (define 1970 como padrão)
+      // Esta é a correção para o erro: 'type 'Null' is not a subtype of type 'DateTime''
+      (map['timestamp'] as DateTime?) ?? DateTime(1970),
+
+      // CORREÇÃO: Lida com Quantidade nula (define 0.0 como padrão)
+      (map['quantidade'] as num?)?.toDouble() ?? 0.0,
+
+      map['tipoRegistro'] ?? 'N/A', // (Isto já estava correto)
+      map['detalhes'] ?? 'N/A', // (Isto já estava correto)
     );
+    // --- FIM DA CORREÇÃO ---
   }
 
   /// Método para exibir dados (usado na listagem)

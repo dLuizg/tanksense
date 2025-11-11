@@ -8,15 +8,10 @@ import 'sensor.dart';
 import 'tanque.dart';
 import 'usuario.dart';
 import 'producao.dart';
-import '../controllers/data_controller.dart'; // <-- 1. IMPORTAR O CONTROLLER
+import '../controllers/data_controller.dart';
 
 class Menu {
-  // --- MODIFICAÇÃO (POO) ---
-  // A View (Menu) deve depender de Controllers (orquestradores)
-  // e não diretamente de Services (regras de negócio).
-  // Estamos mantendo os services por enquanto, mas adicionando o DataController
-  // que é necessário para as funções de Leitura/Produção.
-
+  // (Propriedades da classe permanecem as mesmas)
   final _empresaService = ServiceLocator().empresaService;
   final _localService = ServiceLocator().localService;
   final _dispositivoService = ServiceLocator().dispositivoService;
@@ -25,11 +20,80 @@ class Menu {
   final _usuarioService = ServiceLocator().usuarioService;
   final _leituraService = ServiceLocator().leituraService;
   final _producaoService = ServiceLocator().producaoService;
-
-  // O DataController orquestra operações complexas (como carregar e processar)
-  final _dataController = DataController(); // <-- 2. INSTANCIAR O CONTROLLER
+  final _dataController = DataController();
 
   Future<void> iniciar() async {
+    bool proceedToMainMenu = false;
+
+    // 1. Loop do Pré-Menu de Inicialização
+    while (!proceedToMainMenu) {
+      _limparTela();
+      print("""
+==================== INICIALIZAÇÃO ====================
+Selecione o modo de inicialização:
+
+1 - 🚀 Inicializar Banco e Sincronizar Leituras
+2 - 💨 Iniciar sem dados (Aviso: Pode causar erros!)
+
+0 - ✖️ Sair
+""");
+      stdout.write("Escolha uma opção: ");
+      final initOpcao = stdin.readLineSync();
+
+      switch (initOpcao) {
+        case '1':
+          _limparTela();
+          print("🚀 Iniciando conexões (Firebase/MySQL)...");
+          try {
+            // 1. Inicializa os bancos de dados
+            print("✅ Conexões estabelecidas com sucesso!");
+
+            // --- MODIFICAÇÃO SOLICITADA ---
+            // 2. Executa a sincronização de leituras
+            print("\n🔄 Iniciando sincronização de leituras...");
+            print("Qual o ID do Sensor para sincronizar?");
+            stdout.write("ID: ");
+            final sensorId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
+
+            if (sensorId <= 0) {
+              print("❌ ID de sensor inválido. Sincronização pulada.");
+            } else {
+              // Usamos o DataController (que tem a lógica de orquestração)
+              await _dataController.carregarESincronizarLeituras(
+                  'tanksense---v2-default-rtdb.firebaseio.com', sensorId);
+              print("✅ Sincronização inicial concluída.");
+            }
+            // --- FIM DA MODIFICAÇÃO ---
+
+            proceedToMainMenu = true; // Permite prosseguir
+          } catch (e) {
+            print("❌ Erro fatal ao inicializar: $e");
+            print("A aplicação não pode continuar.");
+            await _pausar();
+            exit(1); // Sai com código de erro
+          }
+          break; // Sai do switch
+
+        case '2':
+          print("\n⚠️ ATENÇÃO: Iniciando sem inicialização de dados.");
+          print("Erros ocorrerão se os bancos não estiverem prontos.");
+          proceedToMainMenu = true; // Permite prosseguir (com risco)
+          break; // Sai do switch
+
+        case '0':
+          print("Saindo...");
+          exit(0);
+
+        default:
+          print("Opção inválida!");
+          await _pausar();
+      }
+    }
+
+    // Pausa antes de entrar no menu principal (após escolher 1 ou 2)
+    await _pausar();
+
+    // 2. Loop do Menu Principal (O código original)
     while (true) {
       _limparTela();
 
@@ -89,7 +153,6 @@ class Menu {
   // ------------------ SUB MENUS ------------------
 
   Future<void> _menuEmpresas() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- EMPRESAS --------
@@ -109,7 +172,6 @@ class Menu {
   }
 
   Future<void> _menuLocais() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- LOCAIS --------
@@ -129,7 +191,6 @@ class Menu {
   }
 
   Future<void> _menuDispositivos() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- DISPOSITIVOS --------
@@ -149,7 +210,6 @@ class Menu {
   }
 
   Future<void> _menuSensores() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- SENSORES --------
@@ -169,7 +229,6 @@ class Menu {
   }
 
   Future<void> _menuTanques() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- TANQUES --------
@@ -189,7 +248,6 @@ class Menu {
   }
 
   Future<void> _menuUsuarios() async {
-    // ... (sem mudanças)
     _limparTela();
     print("""
 -------- USUÁRIOS --------
@@ -208,10 +266,6 @@ class Menu {
     }
   }
 
-  // --- CORREÇÃO (undefined_method) ---
-  // Os métodos 'atualizarLeituras' e 'listarLeituras' foram
-  // removidos do Service (Violação do SRP).
-  // A View (Menu) agora chama a lógica correta.
   Future<void> _menuLeituras() async {
     _limparTela();
     print("""
@@ -224,22 +278,20 @@ class Menu {
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
       case '1':
-        // 1. A View chama o Controller
         print("Qual o ID do Sensor para sincronizar?");
+        stdout.write("ID: ");
         final sensorId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
         if (sensorId <= 0) {
           print("ID de sensor inválido.");
           break;
         }
-        // Usamos o DataController (que tem a lógica de orquestração)
         await _dataController.carregarESincronizarLeituras(
             'tanksense---v2-default-rtdb.firebaseio.com', sensorId);
         break;
       case '2':
-        // 2. A View chama o Controller
         print("Qual o ID do Tanque para processar a produção?");
+        stdout.write("ID: ");
         final tanqueId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
-        // O Controller retorna os dados, a View exibe
         final producao =
             await _dataController.processarProducaoDiaria(tanqueId);
         if (producao == null) {
@@ -247,16 +299,12 @@ class Menu {
         }
         break;
       case '3':
-        // 3. A View chama o novo método de listagem
         await _listarLeituras();
         break;
     }
     await _pausar();
   }
 
-  // --- CORREÇÃO (undefined_method) ---
-  // Os métodos 'registrarProducao' e 'listarProducao' foram
-  // removidos do Service (Violação do SRP).
   Future<void> _menuProducao() async {
     _limparTela();
     print("""
@@ -268,11 +316,9 @@ class Menu {
     stdout.write("Opção: ");
     switch (stdin.readLineSync()) {
       case '1':
-        // 1. A View chama o novo método de cadastro
         await _cadastrarProducaoManual();
         break;
       case '2':
-        // 2. A View chama o novo método de listagem
         await _listarProducao();
         break;
     }
@@ -282,7 +328,6 @@ class Menu {
   // ------------------ AÇÕES CRUD (COM CORREÇÕES) ------------------
 
   Future<void> _cadastrarEmpresa() async {
-    // (Este método já estava correto e serviu de modelo)
     try {
       stdout.write("Nome da Empresa: ");
       final nome = stdin.readLineSync()!;
@@ -297,8 +342,7 @@ class Menu {
   }
 
   Future<void> _listarEmpresas() async {
-    // ✅ CORREÇÃO
-    final lista = await _empresaService.listar(); // <-- Esta linha está CORRETA
+    final lista = await _empresaService.listar();
     print("\n--- Empresas ---");
     for (var e in lista) {
       print("${e.id} - ${e.nome}");
@@ -306,8 +350,6 @@ class Menu {
     await _pausar();
   }
 
-  // --- CORREÇÃO (Causa do RangeError) ---
-  // O menu (View) é responsável por coletar TODOS os dados necessários.
   Future<void> _cadastrarLocal() async {
     try {
       stdout.write("Nome do Local(Sem acentos): ");
@@ -317,16 +359,11 @@ class Menu {
       stdout.write("ID da Empresa (a qual este local pertence): ");
       final empresaId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
 
-      // Não usamos mais o .criar(nome), que tinha placeholders.
-      // Nós criamos o objeto completo aqui na View.
       final novoLocal = Local(0, nome, referencia, empresaId);
 
-      // E chamamos o .cadastrar(objeto)
       await _localService.cadastrar(novoLocal);
       print("Local cadastrado!");
     } catch (e) {
-      // Se o 'empresaId' não existir, o Service agora lança um ArgumentError
-      // (que é melhor que o RangeError).
       print("❌ Erro ao salvar local: $e");
     }
     await _pausar();
@@ -335,14 +372,12 @@ class Menu {
   Future<void> _listarLocais() async {
     final lista = await _localService.listar();
     print("\n--- Locais ---");
-    // --- CORREÇÃO (Linter) ---
     for (var l in lista) {
       print("${l.id} - ${l.nome}");
     }
     await _pausar();
   }
 
-  // --- CORREÇÃO (Causa do RangeError) ---
   Future<void> _cadastrarDispositivo() async {
     try {
       stdout.write("Modelo do Dispositivo (Ex: ESP32, Tank-001): ");
@@ -362,15 +397,12 @@ class Menu {
   Future<void> _listarDispositivos() async {
     final lista = await _dispositivoService.listar();
     print("\n--- Dispositivos ---");
-    // --- CORREÇÃO (Linter) ---
     for (var d in lista) {
-      // (Assumindo que Dispositivo tem 'modelo' e não 'nome')
       print("${d.id} - ${d.modelo} (${d.status})");
     }
     await _pausar();
   }
 
-  // --- CORREÇÃO (Causa do RangeError) ---
   Future<void> _cadastrarSensor() async {
     try {
       stdout.write("Tipo do Sensor (Ex: Ultrassônico, Nível): ");
@@ -392,15 +424,12 @@ class Menu {
   Future<void> _listarSensores() async {
     final lista = await _sensorService.listar();
     print("\n--- Sensores ---");
-    // --- CORREÇÃO (Linter) ---
     for (var s in lista) {
-      // (Assumindo que Sensor tem 'tipo' e não 'nome')
       print("${s.id} - ${s.tipo} (${s.unidadeMedida})");
     }
     await _pausar();
   }
 
-  // --- CORREÇÃO (Causa do RangeError) ---
   Future<void> _cadastrarTanque() async {
     try {
       stdout.write("Altura do Tanque (em cm): ");
@@ -412,7 +441,6 @@ class Menu {
       stdout.write("ID do Dispositivo (que monitora o tanque): ");
       final dispositivoId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
 
-      // O volume atual é 0.0 no cadastro
       final novoTanque = Tanque(0, altura, volMax, 0.0);
       await _tanqueService.cadastrar(novoTanque, localId, dispositivoId);
       print("Tanque cadastrado!");
@@ -425,16 +453,13 @@ class Menu {
   Future<void> _listarTanques() async {
     final lista = await _tanqueService.listar();
     print("\n--- Tanques ---");
-    // --- CORREÇÃO (Linter) ---
     for (var t in lista) {
-      // (Assumindo que Tanque não tem 'nome', mas tem 'id' e 'altura')
       print(
           "${t.id} - Altura: ${t.altura}cm, Vol: ${t.volumeAtual}L / ${t.volumeMax}L");
     }
     await _pausar();
   }
 
-  // --- CORREÇÃO (Causa do RangeError) ---
   Future<void> _cadastrarUsuario() async {
     try {
       stdout.write("Nome do Usuário: ");
@@ -448,7 +473,6 @@ class Menu {
       stdout.write("ID da Empresa (à qual o usuário pertence): ");
       final empresaId = int.tryParse(stdin.readLineSync() ?? '0') ?? 0;
 
-      // Usamos o Factory 'criar' do Usuario (que é uma boa prática de POO)
       final novoUsuario = Usuario.criar(
         id: 0,
         nome: nome,
@@ -470,7 +494,6 @@ class Menu {
   Future<void> _listarUsuarios() async {
     final lista = await _usuarioService.listar();
     print("\n--- Usuários ---");
-    // --- CORREÇÃO (Linter) ---
     for (var u in lista) {
       print("${u.id} - ${u.nome} (${u.email})");
     }
@@ -478,21 +501,18 @@ class Menu {
   }
 
   // --- NOVOS MÉTODOS (POO) ---
-  // Esta é a lógica de View (print) que foi removida dos Services
 
   Future<void> _listarLeituras() async {
     print('\n📊 LISTA DE LEITURAS (do Banco Local)');
     print('═' * 50);
     try {
-      // 1. A View chama o Service para PEGAR os dados
       final leituras = await _leituraService.listarBanco();
       if (leituras.isEmpty) {
         print('📭 Nenhuma leitura encontrada.');
         return;
       }
-      // 2. A View é responsável por EXIBIR os dados
       for (final leitura in leituras) {
-        leitura.exibirDados(); // O Modelo sabe se exibir
+        leitura.exibirDados();
         print('─' * 30);
       }
       print('📊 Total de leituras: ${leituras.length}');
@@ -520,7 +540,6 @@ class Menu {
         detalhes,
       );
 
-      // A View chama o Service de negócio
       await _producaoService.cadastrarProducaoManual(producao);
       print('✅ Produção registrada com sucesso.');
     } catch (e) {
@@ -532,15 +551,13 @@ class Menu {
     print('\n🏭 LISTA DE PRODUÇÃO');
     print('═' * 50);
     try {
-      // 1. A View chama o Service para PEGAR os dados
       final producoes = await _producaoService.listarTodos();
       if (producoes.isEmpty) {
         print('📭 Nenhuma produção encontrada.');
         return;
       }
-      // 2. A View é responsável por EXIBIR os dados
       for (final producao in producoes) {
-        producao.exibirDados(); // O Modelo sabe se exibir
+        producao.exibirDados();
         print('─' * 30);
       }
       print('📊 Total de registros: ${producoes.length}');
