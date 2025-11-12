@@ -1,3 +1,5 @@
+// lib/database/database_connection.dart
+
 import 'package:mysql1/mysql1.dart';
 import 'database_config.dart';
 import 'empresa.dart';
@@ -8,12 +10,17 @@ import 'sensor.dart';
 import 'leitura.dart';
 import 'usuario.dart';
 
+// POO: Classe que gerencia a conexão com o banco de dados MySQL
+// Encapsula toda a lógica de comunicação com o banco de dados
 class DatabaseConnection {
   final DatabaseConfig config;
   MySqlConnection? _connection;
 
+  // POO: Construtor que recebe a configuração como dependência
   DatabaseConnection(this.config);
 
+  // LÓGICA: Método para estabelecer conexão com o banco de dados
+  // Retorna true se a conexão foi bem sucedida, false caso contrário
   Future<bool> connect() async {
     try {
       _connection = await MySqlConnection.connect(ConnectionSettings(
@@ -39,11 +46,13 @@ class DatabaseConnection {
     }
   }
 
+  // LÓGICA: Fecha a conexão com o banco de dados
   Future<void> close() async {
     await _connection?.close();
     print('🔌 Conexão encerrada!');
   }
 
+  // LÓGICA: Executa consultas SELECT e retorna os resultados como lista de mapas
   Future<List<Map<String, dynamic>>> query(String sql,
       [List<Object?>? params]) async {
     if (_connection == null) throw Exception('Database not connected');
@@ -51,15 +60,20 @@ class DatabaseConnection {
     return results.map((row) => row.fields).toList();
   }
 
+  // LÓGICA: Executa comandos INSERT, UPDATE, DELETE e retorna o ID inserido
   Future<int> execute(String sql, [List<Object?>? params]) async {
     if (_connection == null) throw Exception('Database not connected');
     final result = await _connection!.query(sql, params);
     return result.insertId ?? 0;
   }
 
+  // POO: Getter para acessar a conexão internamente
   MySqlConnection? get connection => _connection;
 
   // ========== MÉTODOS PARA SALVAR ENTIDADES ==========
+
+  // POO: Métodos específicos para cada entidade do domínio
+  // Cada método traduz um objeto Dart em comando SQL INSERT
 
   Future<void> salvarEmpresa(Empresa empresa) async {
     await execute(
@@ -125,6 +139,8 @@ class DatabaseConnection {
 
   // ========== MÉTODOS PARA BUSCAR ENTIDADES ==========
 
+  // LÓGICA: Converte dados do banco em objetos Dart
+  // Mapeia cada linha do resultado para uma instância de Leitura
   Future<List<Leitura>> buscarLeituras() async {
     final results =
         await query('SELECT * FROM leitura ORDER BY timestamp DESC');
@@ -143,6 +159,8 @@ class DatabaseConnection {
 
   // ========== MÉTODOS PARA CRIAR TABELAS ==========
 
+  // LÓGICA: Cria toda a estrutura do banco de dados
+  // Usa IF NOT EXISTS para evitar erros se as tabelas já existirem
   Future<void> criarTabelasBase() async {
     // Criar tabela empresa
     await execute('''
