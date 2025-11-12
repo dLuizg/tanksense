@@ -3,7 +3,7 @@ import '../models/leitura.dart';
 import '../services/leitura_service.dart';
 import 'dart:async'; // Necessário para DateTime
 
-//comentei
+//comentei mais um pouco
 class LeituraController {
   final LeituraService _leituraService;
 
