@@ -11,8 +11,6 @@ class SensorDao {
     try {
       var resultados = await db.connection!.query('SELECT * FROM sensor');
       for (var row in resultados) {
-        // RECOMENDAÇÃO: Mude isso para row.fields['nome_coluna']
-        // Usar row.toList()[index] é muito frágil.
         var dados = row.toList();
         if (dados.length >= 3) {
           final id = (dados[0] as num).toInt();
@@ -29,22 +27,16 @@ class SensorDao {
     return sensores;
   }
 
-  // --- INÍCIO DA MODIFICAÇÃO ---
-
-  /// Insere um sensor no banco e retorna o objeto salvo com o ID.
   Future<Sensor?> insert(Sensor sensor) async {
     try {
-      // 1. Executamos a query e guardamos o resultado
       var resultado = await db.connection!.query(
         'INSERT INTO sensor (tipo, unidadeMedida, dispositivo_idDispositivo) VALUES (?, ?, ?)',
         [sensor.tipo, sensor.unidadeMedida, sensor.dispositivoId],
       );
 
-      // 2. Verificamos se a inserção deu certo (gerou um ID)
       final int? newId = resultado.insertId;
 
       if (newId != null && newId > 0) {
-        // 3. Retornamos um NOVO objeto Sensor com o ID correto.
         return Sensor(
           newId,
           sensor.tipo,
@@ -52,11 +44,10 @@ class SensorDao {
           sensor.dispositivoId,
         );
       }
-      return null; // Falha na inserção
+      return null;
     } catch (e) {
       print('❌ Erro ao salvar sensor: $e');
-      rethrow; // Propaga o erro para a camada de serviço
+      rethrow;
     }
   }
-  // --- FIM DA MODIFICAÇÃO ---
 }

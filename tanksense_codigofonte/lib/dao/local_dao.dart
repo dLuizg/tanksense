@@ -22,6 +22,4 @@ class LocalDao extends BaseDAO<Local> {
       rethrow;
     }
   }
-
-  
 }

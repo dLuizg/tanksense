@@ -16,12 +16,6 @@ class LeituraDao {
       ''');
 
       for (var row in resultados) {
-        // --- INÍCIO DA MODIFICAÇÃO (POO Robusto) ---
-        // Trocando acesso por ÍNDICE (frágil) por NOME DE COLUNA (robusto)
-
-        // final dados = row.toList(); // <-- Não precisamos mais disso
-        // final timestamp = DateTime.parse(dados[1].toString()).toUtc(); // <-- Antigo
-
         final timestamp = (row.fields['timestamp'] as DateTime).toUtc();
 
         leituras.add(Leitura(
@@ -31,9 +25,8 @@ class LeituraDao {
           (row.fields['nivelCm'] as num).toDouble(),
           (row.fields['porcentagem'] as num).toDouble(),
           row.fields['statusTanque'] as String,
-          'cm', // (Unidade não veio do banco?)
+          'cm',
         ));
-        // --- FIM DA MODIFICAÇÃO ---
       }
     } catch (e) {
       print('❌ Erro ao buscar leituras do MySQL: $e');
@@ -67,7 +60,6 @@ class LeituraDao {
   }
 
   String _formatarDataParaMySQL(DateTime dateTime) {
-    // ... (sem mudanças)
     return dateTime.toIso8601String().substring(0, 19).replaceFirst('T', ' ');
   }
 }

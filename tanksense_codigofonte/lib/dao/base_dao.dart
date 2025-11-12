@@ -4,11 +4,11 @@ import '../models/entidade_base.dart';
 abstract class BaseDAO<T extends EntidadeBase> {
   final DatabaseConnection db;
   final String tableName;
-  final String idColumn; // Nome da coluna ID no DB (Ex: 'idEmpresa')
+  final String idColumn;
 
   BaseDAO(this.db, this.tableName, this.idColumn);
 
-  T fromMap(Map<String, dynamic> map); // Método Factory de Entidade
+  T fromMap(Map<String, dynamic> map);
 
   Future<int> insert(T entity);
 
@@ -16,6 +16,4 @@ abstract class BaseDAO<T extends EntidadeBase> {
     final result = await db.query('SELECT * FROM $tableName');
     return result.map((map) => fromMap(map)).toList();
   }
-
-  // ... métodos de findById, update, delete
 }
