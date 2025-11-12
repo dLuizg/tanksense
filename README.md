@@ -197,8 +197,11 @@ Para issues e dúvidas:
 4. Caso o erro persistir nos contate via e-mail
 
 henrique.molinari@sou.unifeob.edu.br
+
 luiz.g.diniz@sou.unifeob.edu.br
+
 matteo.bonvento@sou.unifeob.edu.br
+
 nicolas.victorio@sou.unifeob.edu.br
 
 ## Integrantes Do Projeto
