@@ -10,6 +10,8 @@ import '../models/usuario.dart';
 import '../models/leitura.dart';
 import '../models/producao.dart';
 
+// Classe genérica base para serviços de entidades
+// Fornece métodos padrão como cadastrar, listar e gerar IDs automáticos.
 class _BaseService<T extends EntidadeBase> {
   final DatabaseConnection db;
   final List<T> localList;
@@ -18,12 +20,14 @@ class _BaseService<T extends EntidadeBase> {
 
   _BaseService(this.db, this.localList, this.mapper);
 
+ //Método genérico para cadastrar uma entidade (simula operação no banco)
   Future<void> cadastrar(T entidade, String sql) async {
     localList.add(entidade);
     // Simula a escrita no banco
     await db.execute(sql, [/* params de entidade */]);
   }
 
+// Simula a leitura de registros no banco e converte os resultados em objetos T
   Future<List<T>> listar() async {
     // Simula a leitura do banco
     final results = await db.query('SELECT * FROM alguma_tabela');
@@ -31,6 +35,7 @@ class _BaseService<T extends EntidadeBase> {
     return results.map((row) => mapper(row)).toList();
   }
 
+// Retorna o próximo ID disponível com base nos registros locais
   int getNextId() {
     if (localList.isNotEmpty) {
       _nextId = localList.map((e) => e.id).reduce((a, b) => a > b ? a : b) + 1;
@@ -39,6 +44,7 @@ class _BaseService<T extends EntidadeBase> {
   }
 }
 
+// Serviço específico para a entidade Empresa
 class EmpresaService extends _BaseService<Empresa> {
   EmpresaService(DatabaseConnection db, List<Empresa> list)
       : super(db, list, Empresa.fromMap);
@@ -46,6 +52,7 @@ class EmpresaService extends _BaseService<Empresa> {
       super.cadastrar(empresa, 'INSERT INTO empresa (...) VALUES (...)');
 }
 
+// Serviço para a entidade Local
 class LocalService extends _BaseService<Local> {
   LocalService(DatabaseConnection db, List<Local> list)
       : super(db, list, Local.fromMap);
@@ -53,6 +60,7 @@ class LocalService extends _BaseService<Local> {
       .cadastrar(local, 'INSERT INTO local (...) VALUES (..., $empresaId)');
 }
 
+// Serviço para Dispositivo
 class DispositivoService extends _BaseService<Dispositivo> {
   DispositivoService(DatabaseConnection db, List<Dispositivo> list)
       : super(
@@ -64,6 +72,7 @@ class DispositivoService extends _BaseService<Dispositivo> {
       .cadastrar(dispositivo, 'INSERT INTO dispositivo (...) VALUES (...)');
 }
 
+// Serviço para Sensor
 class SensorService extends _BaseService<Sensor> {
   SensorService(DatabaseConnection db, List<Sensor> list)
       : super(
@@ -75,6 +84,7 @@ class SensorService extends _BaseService<Sensor> {
       super.cadastrar(sensor, 'INSERT INTO sensor (...) VALUES (...)');
 }
 
+// Serviço para Tanque
 class TanqueService extends _BaseService<Tanque> {
   TanqueService(DatabaseConnection db, List<Tanque> list)
       : super(
@@ -91,6 +101,7 @@ class TanqueService extends _BaseService<Tanque> {
           'INSERT INTO tanques (...) VALUES (..., $localId, $dispositivoId)');
 }
 
+// Serviço para Usuário
 class UsuarioService extends _BaseService<Usuario> {
   UsuarioService(DatabaseConnection db, List<Usuario> list)
       : super(
@@ -109,13 +120,14 @@ class UsuarioService extends _BaseService<Usuario> {
       super.cadastrar(usuario, 'INSERT INTO usuarios (...) VALUES (...)');
 }
 
+// Serviço responsável pelas leituras dos sensores
 class LeituraService {
   final DatabaseConnection db;
   final List<Leitura> leiturasLocais;
 
   LeituraService(this.db, this.leiturasLocais);
 
-  // Simula a leitura do Firebase
+   // Gera simuladas (mock) com dados fictícios e timestamps decrescentes
   Future<List<Leitura>> carregarDoFirebase(
       String baseUrl, String authToken) async {
     // MOCK: Gera 20 leituras fictícias.
@@ -130,11 +142,14 @@ class LeituraService {
     return novasLeituras;
   }
 
+// Simula a leitura das leituras já salvas no banco
   Future<List<Leitura>> listarBanco() async {
     // Simula buscar leituras já salvas no MySQL
     return []; // Retorna lista vazia para simular que não há nenhuma
   }
 
+
+  // Envia novas leituras simuladas para o banco e adiciona na lista loca
   Future<void> enviarNovasParaBanco(
       List<Leitura> novasLeituras, int sensorId) async {
     for (var leitura in novasLeituras) {
@@ -153,6 +168,7 @@ class LeituraService {
   }
 }
 
+// Serviço responsável por calcular e registrar produções com base nas leituras
 class ProducaoService {
   final DatabaseConnection db;
   final List<Producao> producoesLocais;
@@ -160,6 +176,7 @@ class ProducaoService {
 
   ProducaoService(this.db, this.producoesLocais);
 
+// Calcula produções a partir das diferenças de nível entre leituras consecutivas
   List<Producao> calcularDeLeituras(List<Leitura> leituras) {
     if (leituras.length < 2) return [];
 
@@ -189,6 +206,7 @@ class ProducaoService {
     return producoesGeradas;
   }
 
+// Envia as produções calculadas para o banco
   Future<void> enviarParaBanco(List<Producao> producoes, int sensorId) async {
     for (var producao in producoes) {
       await db.execute(

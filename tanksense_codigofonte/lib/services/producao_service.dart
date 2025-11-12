@@ -4,15 +4,18 @@ import '../models/leitura.dart';
 import '../models/database_connection.dart';
 import '../dao/producao_dao.dart';
 
+ // Injeção de dependência: o DAO depende da conexão com o banco
 class ProducaoService {
   final ProducaoDao _dao;
   ProducaoService(DatabaseConnection db) : _dao = ProducaoDao(db);
   ProducaoService.fromDao(this._dao);
 
+  // Recupera todas as produções cadastradas
   Future<List<Producao>> listarTodos() async {
     return await _dao.fetchAll();
   }
 
+  // Lista produções dentro de um intervalo de tempo específico
   Future<List<Producao>> listarPorPeriodo(DateTime inicio, DateTime fim) async {
     return await _dao.fetchByPeriod(inicio, fim);
   }
@@ -21,11 +24,14 @@ class ProducaoService {
   /// (Responsabilidade correta do Service)
   List<Producao> calcularDeLeituras(List<Leitura> leituras) {
     final producoes = <Producao>[];
+    // Começa a partir do índice 1, pois o cálculo compara leituras consecutiva
     for (int i = 1; i < leituras.length; i++) {
       final leituraAtual = leituras[i];
       final leituraAnterior = leituras[i - 1];
+   // Diferença percentual entre duas leituras
       double variacaoPercentual =
           leituraAnterior.porcentagem - leituraAtual.porcentagem;
+  // Apenas se houver redução no nível (produção efetiva)
       if (variacaoPercentual > 0) {
         double metrosFio = variacaoPercentual; // (Sua lógica de negócio)
         producoes.add(Producao(
