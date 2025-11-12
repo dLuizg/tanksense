@@ -1,4 +1,4 @@
-// lib/menu.dart
+// lib/models/menu.dart
 import 'dart:io';
 import 'service_locator.dart';
 import 'empresa.dart';
@@ -10,8 +10,11 @@ import 'usuario.dart';
 import 'producao.dart';
 import '../controllers/data_controller.dart';
 
+// POO: Classe Menu que gerencia a interface de usuário e orquestra toda a aplicação
+// Centraliza a navegação e interação com todos os serviços do sistema
 class Menu {
-  // (Propriedades da classe permanecem as mesmas)
+  // POO: Injeção de dependências através do Service Locator
+  // Cada propriedade armazena uma instância de serviço específico
   final _empresaService = ServiceLocator().empresaService;
   final _localService = ServiceLocator().localService;
   final _dispositivoService = ServiceLocator().dispositivoService;
@@ -22,10 +25,13 @@ class Menu {
   final _producaoService = ServiceLocator().producaoService;
   final _dataController = DataController();
 
+  // LÓGICA: Método principal que inicia o loop de execução do menu
+  // Controla o fluxo completo da aplicação desde a inicialização até as operações principais
   Future<void> iniciar() async {
     bool proceedToMainMenu = false;
 
     // 1. Loop do Pré-Menu de Inicialização
+    // LÓGICA: Garante que o sistema esteja configurado antes de permitir operações
     while (!proceedToMainMenu) {
       _limparTela();
       print("""
@@ -48,8 +54,8 @@ Selecione o modo de inicialização:
             // 1. Inicializa os bancos de dados
             print("✅ Conexões estabelecidas com sucesso!");
 
-            // --- MODIFICAÇÃO SOLICITADA ---
-            // 2. Executa a sincronização de leituras
+            // LÓGICA: Sincronização inicial de leituras do Firebase
+            // Orquestra o carregamento e processamento de dados remotos
             print("\n🔄 Iniciando sincronização de leituras...");
             print("Qual o ID do Sensor para sincronizar?");
             stdout.write("ID: ");
@@ -63,7 +69,6 @@ Selecione o modo de inicialização:
                   'tanksense---v2-default-rtdb.firebaseio.com', sensorId);
               print("✅ Sincronização inicial concluída.");
             }
-            // --- FIM DA MODIFICAÇÃO ---
 
             proceedToMainMenu = true; // Permite prosseguir
           } catch (e) {
@@ -94,6 +99,7 @@ Selecione o modo de inicialização:
     await _pausar();
 
     // 2. Loop do Menu Principal (O código original)
+    // LÓGICA: Loop infinito que mantém a aplicação rodando até o usuário sair
     while (true) {
       _limparTela();
 
@@ -115,6 +121,7 @@ Selecione o modo de inicialização:
       stdout.write("Escolha uma opção: ");
       final opcao = stdin.readLineSync();
 
+      // LÓGICA: Switch principal que direciona para os submenus específicos
       switch (opcao) {
         case '1':
           await _menuEmpresas();
@@ -151,6 +158,8 @@ Selecione o modo de inicialização:
   }
 
   // ------------------ SUB MENUS ------------------
+  // POO: Cada método representa um módulo específico do sistema
+  // Segregam funcionalidades por domínio de negócio
 
   Future<void> _menuEmpresas() async {
     _limparTela();
@@ -326,6 +335,7 @@ Selecione o modo de inicialização:
   }
 
   // ------------------ AÇÕES CRUD (COM CORREÇÕES) ------------------
+  // POO: Métodos que implementam operações CRUD específicas para cada entidade
 
   Future<void> _cadastrarEmpresa() async {
     try {
@@ -568,7 +578,10 @@ Selecione o modo de inicialização:
 
   // ------------------ FUNÇÕES AUXILIARES ------------------
 
+  // LÓGICA: Limpa o terminal para uma experiência de usuário mais limpa
   void _limparTela() => stdout.write("\x1B[2J\x1B[0;0H");
+  
+  // LÓGICA: Pausa a execução aguardando interação do usuário
   Future<void> _pausar() async {
     stdout.write("\nPressione ENTER para continuar...");
     stdin.readLineSync();

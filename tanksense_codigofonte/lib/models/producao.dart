@@ -1,7 +1,9 @@
-// lib/producao.dart
+// lib/models/producao.dart
 import 'package:intl/intl.dart'; // (Isto funcionará após o 'dart pub get')
 import 'entidade_base.dart';
 
+// POO: Classe Producao que herda de EntidadeBase
+// Representa registros de produção no sistema de monitoramento
 class Producao extends EntidadeBase {
   final int idProducao;
   final int sensorId; // Chave estrangeira
@@ -11,8 +13,8 @@ class Producao extends EntidadeBase {
   final String detalhes;
 
   // --- INÍCIO DA CORREÇÃO ---
-  // O construtor da classe mãe 'EntidadeBase' espera um
-  // argumento POSICIONAL, e não NOMEADO.
+  // POO: Construtor corrigido - a classe mãe espera argumento posicional
+  // LÓGICA: O super deve receber o ID como parâmetro posicional, não nomeado
   Producao(
     this.idProducao,
     this.sensorId,
@@ -20,21 +22,23 @@ class Producao extends EntidadeBase {
     this.quantidade,
     this.tipoRegistro,
     this.detalhes,
-  ) : super(idProducao); // <-- CORRIGIDO: Era super(id: idProducao)
+  ) : super(idProducao);
   // --- FIM DA CORREÇÃO ---
 
-  // O BaseDAO precisa que toda entidade tenha um 'id'.
+  // POO: Getter que satisfaz o contrato da classe base EntidadeBase
+  // LÓGICA: Retorna o idProducao como ID geral da entidade
   @override
   int get id => idProducao;
 
-  /// Implementação do contrato 'EntidadeBase' (exigido)
+  /// POO: Implementação do método abstrato da classe base
   @override
   String obterTipo() {
-    // CORREÇÃO de Estilo: Removido 'this.' desnecessário
+
     return tipoRegistro;
   }
 
-  /// Implementação do contrato 'EntidadeBase' (exigido)
+  /// POO: Implementação do método para serialização em mapa
+  /// LÓGICA: Converte o objeto para formato compatível com o banco de dados
   @override
   Map<String, dynamic> toMap() {
     // Converte o objeto em um mapa para o BaseDAO (se ele usar)
@@ -48,7 +52,8 @@ class Producao extends EntidadeBase {
     };
   }
 
-  /// Cria uma cópia deste objeto, substituindo os campos fornecidos.
+  /// POO: Método para criar cópia do objeto com campos atualizados (padrão Builder)
+  /// LÓGICA: Útil para atualizações parciais sem modificar o objeto original
   Producao copyWith({
     int? idProducao,
     int? sensorId,
@@ -67,10 +72,12 @@ class Producao extends EntidadeBase {
     );
   }
 
-  /// Construtor Factory para criar a partir de um Map (vindo do banco)
+  /// POO: Factory constructor para criação a partir de dados do banco
+  /// LÓGICA: Converte Map em objeto Producao com tratamento defensivo para nulos
   factory Producao.fromMap(Map<String, dynamic> map) {
     // --- INÍCIO DA CORREÇÃO ---
-    // Tornamos o construtor defensivo contra valores NULL do banco.
+    // LÓGICA: Construtor defensivo contra valores NULL do banco
+    // Previne erros de tipo quando o banco retorna valores nulos
 
     return Producao(
       // CORREÇÃO: Lida com IDs nulos (define 0 como padrão)
@@ -84,13 +91,14 @@ class Producao extends EntidadeBase {
       // CORREÇÃO: Lida com Quantidade nula (define 0.0 como padrão)
       (map['quantidade'] as num?)?.toDouble() ?? 0.0,
 
-      map['tipoRegistro'] ?? 'N/A', // (Isto já estava correto)
-      map['detalhes'] ?? 'N/A', // (Isto já estava correto)
+      map['tipoRegistro'] ?? 'N/A', 
+      map['detalhes'] ?? 'N/A', 
     );
     // --- FIM DA CORREÇÃO ---
   }
 
-  /// Método para exibir dados (usado na listagem)
+  /// LÓGICA: Método para exibição formatada dos dados de produção
+  /// Usado nas interfaces de listagem para apresentação ao usuário
   @override
   void exibirDados() {
     final formatoData = DateFormat('dd/MM/yyyy HH:mm:ss');

@@ -1,4 +1,4 @@
-// lib/database_setup.dart
+// lib/database/database_setup.dart
 
 import 'database_connection.dart';
 

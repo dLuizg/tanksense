@@ -1,3 +1,5 @@
+// lib/models/service_locator.dart
+
 import 'database_connection.dart';
 
 // DAOs
@@ -20,15 +22,15 @@ import '../services/usuario_service.dart';
 import '../services/leitura_service.dart';
 import '../services/producao_service.dart';
 
-/// ---------------------------------------------------------
-///  SERVICE LOCATOR (Singleton)
-/// ---------------------------------------------------------
-/// Responsável por centralizar todas as instâncias de DAO e Service.
-/// Deve ser inicializado **antes de abrir o Menu**.
+
+// Responsável por centralizar todas as instâncias de DAO e Service.
+// Deve ser inicializado **antes de abrir o Menu**.
+// POO: Padrão Singleton - garante uma única instância global
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();
   factory ServiceLocator() => _instance;
 
+  // POO: Construtor privado para impedir instanciação externa
   ServiceLocator._internal();
 
   // Conexão com o banco
@@ -54,13 +56,12 @@ class ServiceLocator {
   late LeituraService leituraService;
   late ProducaoService producaoService;
 
-  /// ---------------------------------------------------------
-  /// Inicialização global
-  /// ---------------------------------------------------------
+  // LÓGICA: Método de inicialização que configura toda a hierarquia de dependências
   Future<void> init(DatabaseConnection db) async {
     _db = db;
 
-    // Instanciar DAOs
+    // POO: Instanciação dos DAOs - camada de acesso a dados
+    // Cada DAO recebe a conexão com o banco para executar operações
     empresaDao = EmpresaDao(_db);
     localDao = LocalDao(_db);
     dispositivoDao = DispositivoDao(_db);
@@ -70,7 +71,8 @@ class ServiceLocator {
     leituraDao = LeituraDao(_db);
     producaoDao = ProducaoDao(_db);
 
-    // Instanciar Services
+    // POO: Instanciação dos Services - camada de lógica de negócio
+    // Cada Service recebe seu respectivo DAO para operações de persistência
     empresaService = EmpresaService.fromDao(empresaDao);
     localService = LocalService.fromDao(localDao);
     dispositivoService = DispositivoService.fromDao(dispositivoDao);

@@ -1,6 +1,8 @@
-// leitura.dart
+// lib/models/leitura.dart
 import 'entidade_base.dart';
 
+// POO: Classe Leitura que herda de EntidadeBase
+// Representa uma leitura de sensor com dados de medição e timestamp
 class Leitura extends EntidadeBase {
   final DateTime _timestamp;
   final double _distanciaCm;
@@ -9,6 +11,7 @@ class Leitura extends EntidadeBase {
   final String _status;
   final String _unidade;
 
+  // POO: Construtor principal que inicializa todos os atributos finais
   Leitura(
     super.id,
     this._timestamp,
@@ -19,21 +22,26 @@ class Leitura extends EntidadeBase {
     this._unidade,
   );
 
+  // POO: Factory constructor para criação de objetos a partir de dados do Firebase
+  // LÓGICA: Processa dados brutos com múltiplos formatos e validações robustas
   factory Leitura.fromFirebase(Map<String, dynamic> data, String id) {
     DateTime timestamp;
 
+    // LÓGICA: Processamento complexo do timestamp com múltiplos formatos suportados
     try {
       final timestampData = data['timestamp'];
 
       if (timestampData == null) {
         timestamp = DateTime.now().toUtc();
       } else if (timestampData is String && timestampData.contains('T')) {
+        // Formato ISO 8601
         try {
           timestamp = DateTime.parse(timestampData).toUtc();
         } catch (e) {
           timestamp = DateTime.now().toUtc();
         }
       } else if (timestampData is String && timestampData.contains('/')) {
+        // Formato personalizado DD/MM/AAAA HH:MM:SS
         try {
           final parts = timestampData.split(' ');
           if (parts.length == 2) {
@@ -59,6 +67,7 @@ class Leitura extends EntidadeBase {
           timestamp = DateTime.now().toUtc();
         }
       } else if (timestampData is int || timestampData is double) {
+        // Timestamp em milissegundos
         try {
           timestamp = DateTime.fromMillisecondsSinceEpoch(
             timestampData.toInt(),
@@ -74,7 +83,7 @@ class Leitura extends EntidadeBase {
       timestamp = DateTime.now().toUtc();
     }
 
-    // Converter dados numéricos
+    // LÓGICA: Conversão e validação dos dados numéricos com tratamento de tipos
     double distanciaCm = 0.0;
     double nivelCm = 0.0;
     double porcentagem = 0.0;
@@ -82,7 +91,7 @@ class Leitura extends EntidadeBase {
     String unidade = 'cm';
 
     try {
-      // Distância
+      // Processamento da distância com suporte a múltiplos tipos de dados
       if (data['distancia_cm'] != null) {
         if (data['distancia_cm'] is double) {
           distanciaCm = data['distancia_cm'];
@@ -93,7 +102,7 @@ class Leitura extends EntidadeBase {
         }
       }
 
-      // Nível
+      // Processamento do nível
       if (data['nivel_cm'] != null) {
         if (data['nivel_cm'] is double) {
           nivelCm = data['nivel_cm'];
@@ -104,7 +113,7 @@ class Leitura extends EntidadeBase {
         }
       }
 
-      // Porcentagem
+      // Processamento da porcentagem com validação implícita
       if (data['porcentagem'] != null) {
         if (data['porcentagem'] is double) {
           porcentagem = data['porcentagem'];
@@ -115,14 +124,14 @@ class Leitura extends EntidadeBase {
         }
       }
 
-      // Status e Unidade
+      // Processamento de campos textuais
       if (data['status'] != null) status = data['status'].toString();
       if (data['unidade'] != null) unidade = data['unidade'].toString();
     } catch (e) {
       print('❌ Erro ao converter dados: $e');
     }
 
-    // Gerar ID
+    // LÓGICA: Geração segura de ID com fallback para timestamp atual
     int safeId = int.tryParse(id) ?? DateTime.now().millisecondsSinceEpoch;
 
     return Leitura(
@@ -136,7 +145,7 @@ class Leitura extends EntidadeBase {
     );
   }
 
-  // Getters
+  // POO: Getters para acesso controlado aos atributos privados
   DateTime get timestamp => _timestamp;
   double get distanciaCm => _distanciaCm;
   double get nivelCm => _nivelCm;
@@ -144,17 +153,18 @@ class Leitura extends EntidadeBase {
   String get status => _status;
   String get unidade => _unidade;
 
-  // Getters para compatibilidade
+  // Getters para compatibilidade com interface esperada
   double get valor => _nivelCm;
   int get tanqueId => 1;
   DateTime get dataHora => _timestamp;
 
-  // VERIFICAÇÃO DE TIMESTAMP - MÉTODO PRINCIPAL
+  // LÓGICA: Método para comparar se duas leituras têm exatamente o mesmo timestamp
+  // Útil para evitar duplicatas em processamento de dados
   bool temMesmoTimestamp(Leitura outra) {
     return _timestamp.isAtSameMomentAs(outra._timestamp);
   }
 
-  // Verificar se é válida
+  // LÓGICA: Getter que valida se os dados da leitura são consistentes e válidos
   bool get isValid {
     return _distanciaCm > 0 &&
         _nivelCm >= 0 &&
@@ -163,6 +173,7 @@ class Leitura extends EntidadeBase {
         _status.isNotEmpty;
   }
 
+  // POO: Implementação do método abstrato para exibição formatada dos dados
   @override
   void exibirDados() {
     print('📊 LEITURA - ${_formatarData(_timestamp)}');
@@ -175,11 +186,13 @@ class Leitura extends EntidadeBase {
     print('─' * 35);
   }
 
+  // POO: Implementação do método abstrato para identificar o tipo de entidade
   @override
   String obterTipo() {
     return "Leitura de Sensor";
   }
 
+  // LÓGICA: Método privado para formatação de data no padrão brasileiro
   String _formatarData(DateTime data) {
     try {
       final localTime = data.toLocal();
@@ -190,11 +203,13 @@ class Leitura extends EntidadeBase {
     }
   }
 
+  // POO: Sobrescrita do toString para representação resumida da leitura
   @override
   String toString() {
     return '${_formatarData(_timestamp)} - ${_porcentagem.toStringAsFixed(1)}% - $_status';
   }
 
+  // POO: Implementação do método para serialização em mapa
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -208,7 +223,7 @@ class Leitura extends EntidadeBase {
     };
   }
 
-  // Método para timestamp em string (usar como chave única)
+  // LÓGICA: Getter que fornece timestamp em formato string para uso como chave única
   String get timestampString {
     return _timestamp.toIso8601String();
   }
