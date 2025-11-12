@@ -1,21 +1,35 @@
 // lib/database/database_setup.dart
 
+// POO: Importando a definição da classe 'DatabaseConnection', da qual esta classe depende.
 import 'database_connection.dart';
 
-// POO: Classe que aplica o Princípio da Responsabilidade Única (SRP)
-// Sua única responsabilidade é gerenciar a criação do schema do banco de dados
+// POO: Definição da classe 'DatabaseSetup'.
+// Esta classe encapsula toda a lógica de *criação* do esquema do banco.
+// É um ótimo exemplo de Responsabilidade Única (Single Responsibility Principle - SRP).
 class DatabaseSetup {
+  // POO: Atributo (campo) privado e final.
+  // Armazena a instância da conexão com o banco.
   final DatabaseConnection _db;
 
-  // POO: Composição - recebe uma dependência de DatabaseConnection via construtor
+  // POO: Construtor da classe.
+  // Ele recebe a conexão via Injeção de Dependência,
+  // o que "compõe" a classe (ela "tem uma" conexão).
   DatabaseSetup(this._db);
 
-  // LÓGICA: Método principal que orquestra a criação de todas as tabelas
-  // Garante que a estrutura do banco esteja pronta para uso
+  // POO: Definição de um método público da classe.
+  // LÓGICA: É um método 'async' (assíncrono) pois a criação de tabelas
+  // é uma operação de I/O (Entrada/Saída) que leva tempo.
+  // Retorna 'Future<void>' (um futuro vazio), indicando que
+  // apenas executa uma tarefa e não retorna um valor.
   Future<void> criarTabelasBase() async {
+    // LÓGICA: Imprime um log no console (feedback para o usuário/dev).
     print('🔄 Verificando e criando tabelas (schema)...');
 
-    // LÓGICA: Criação da tabela empresa - entidade principal do sistema
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: 'await' pausa a execução aqui até o comando SQL terminar.
+    // LÓGICA: A String SQL ('CREATE TABLE IF NOT EXISTS') é a lógica de
+    // definição da tabela 'empresa', especificando colunas (idEmpresa, nome, cnpj),
+    // tipos (INT, VARCHAR), e restrições (AUTO_INCREMENT, PRIMARY KEY, NOT NULL, UNIQUE).
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS empresa (
         idEmpresa INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,8 +38,12 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela local com chave estrangeira para empresa
-    // Relacionamento 1:N - uma empresa pode ter vários locais
+    // POO: Novamente, chama o método 'execute' no objeto '_db'.
+    // LÓGICA: 'await' espera o comando terminar.
+    // LÓGICA: Define a tabela 'local', criando um relacionamento 1:N com 'empresa'
+    // através da 'FOREIGN KEY' (Chave Estrangeira).
+    // LÓGICA: 'ON DELETE CASCADE' é uma regra que diz: se uma empresa for
+    // deletada, todos os locais associados a ela também devem ser deletados.
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS local (
         idLocal INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +54,8 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela dispositivo - equipamentos independentes
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'dispositivo' (uma entidade independente).
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS dispositivo (
         idDispositivo INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,8 +64,10 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela tanque com relacionamentos duplos
-    // Conecta tanque a local e dispositivo simultaneamente
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'tanque'.
+    // LÓGICA: Esta tabela possui duas Chaves Estrangeiras,
+    // relacionando-se tanto com 'local' quanto com 'dispositivo'.
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS tanque (
         idTanque INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,8 +81,8 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela sensor com chave estrangeira para dispositivo
-    // Um dispositivo pode ter múltiplos sensores
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'sensor', que se relaciona com 'dispositivo' (1:N).
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS sensor (
         idSensor INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,8 +93,13 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela usuario com dados de autenticação e perfil
-    // Relacionamento opcional com empresa (pode ser nulo)
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'usuario'.
+    // LÓGICA: O relacionamento com 'empresa' é opcional (a coluna 'empresa_idEmpresa'
+    // pode ser 'NULL').
+    // LÓGICA: 'ON DELETE SET NULL' é uma regra que diz: se a empresa for deletada,
+    // o campo 'empresa_idEmpresa' no usuário se tornará 'NULL', mas o usuário não
+    // será deletado (diferente de 'CASCADE').
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS usuario (
         idUsuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -83,13 +109,16 @@ class DatabaseSetup {
         perfil VARCHAR(50) NOT NULL,
         dataCriacao DATETIME NOT NULL,
         ultimoLogin DATETIME NOT NULL,
-        empresa_idEmpresa INT,
+        empresa_idEmpresa INT, 
         FOREIGN KEY (empresa_idEmpresa) REFERENCES empresa(idEmpresa) ON DELETE SET NULL
       )
     ''');
 
-    // LÓGICA: Tabela leitura - registros de medições dos sensores
-    // Armazena dados de nível e status do tanque
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'leitura' (tabela de "fatos", registra eventos).
+    // LÓGICA: Relaciona-se com 'sensor'. O 'ON DELETE SET NULL' aqui garante
+    // que, se um sensor for deletado, as leituras históricas não sejam
+    // perdidas, apenas percam a referência ao sensor.
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS leitura (
         idLeitura INT AUTO_INCREMENT PRIMARY KEY,
@@ -103,8 +132,11 @@ class DatabaseSetup {
       )
     ''');
 
-    // LÓGICA: Tabela producao - registros de produção com detalhes
-    // Permite rastreamento completo das atividades
+    // POO: Chama o método 'execute' no objeto '_db'.
+    // LÓGICA: Define a tabela 'producao', outra tabela de "fatos".
+    // LÓGICA: 'TEXT' é um tipo de dado para strings longas (detalhes).
+    // LÓGICA: Aqui, 'ON DELETE CASCADE' é usado, significando que se o sensor
+    // for deletado, os registros de produção associados a ele também são.
     await _db.execute('''
       CREATE TABLE IF NOT EXISTS producao (
         idProducao INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,6 +149,7 @@ class DatabaseSetup {
       )
     ''');
 
+    // LÓGICA: Imprime uma mensagem de sucesso no console.
     print('✅ Schema do banco verificado com sucesso.');
   }
-}
+} // POO: Fim da definição da classe 'DatabaseSetup'.
