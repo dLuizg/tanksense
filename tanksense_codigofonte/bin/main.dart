@@ -1,25 +1,33 @@
 // bin/main.dart
 
-//LUIZ AQUI
 import 'package:tanksense/models/database_config.dart';
 import 'package:tanksense/models/database_connection.dart';
 import 'package:tanksense/models/service_locator.dart';
 import 'package:tanksense/models/menu.dart';
-import 'package:tanksense/models/database_setup.dart'; // <-- 1. IMPORTE A NOVA CLASSE
+import 'package:tanksense/models/database_setup.dart';
 
+// Ponto de entrada principal da aplicação - função assíncrona
 Future<void> main() async {
+  // Cria uma instância de conexão com o banco de dados usando configurações pré-definidas
   final db = DatabaseConnection(databaseConfig);
+  // Estabelece a conexão física com o banco de dados (operações de I/O)
   await db.connect();
 
-  // --- INÍCIO DA CORREÇÃO ---
-  // A lógica de criar tabelas agora está na sua própria classe (SRP)
+  // POO: Princípio da Responsabilidade Única - classe dedicada apenas para setup do banco
+  // Cria uma instância especializada apenas para configuração do esquema do banco
   final setup = DatabaseSetup(db);
+  // Executa a criação das tabelas necessárias para a aplicação funcionar
+  // LÓGICA: Garante que a estrutura do banco existe antes de qualquer operação
   await setup.criarTabelasBase();
-  // --- FIM DA CORREÇÃO ---
 
-  // Inicializa os DAOs e Services
+  // POO: Padrão de Injeção de Dependência com Service Locator
+  // Inicializa todos os serviços e DAOs da aplicação em um container central
+  // LÓGICA: Configura dependências antes do uso, seguindo o princípio de inversão de controle
   await ServiceLocator().init(db);
 
+  // POO: Instancia o menu principal que controla o fluxo da aplicação
+  // Cria o objeto menu que gerencia a interface com o usuário
   final menu = Menu();
+  // Inicia o loop principal do programa, aguardando interações do usuário
   await menu.iniciar();
 }
