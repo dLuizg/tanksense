@@ -204,8 +204,11 @@ nicolas.victorio@sou.unifeob.edu.br
 ## Integrantes Do Projeto
 
 Henrique de Oliveira Molinari        | RA: 25001176
+
 Luiz Gustavo Paliares Diniz          | RA: 25001239
+
 Matteo Enrico Ferri Bonvento         | RA: 25000081
+
 Nicolas Victorio Buciolli De Souza   | RA: 25000408
 
 ---
