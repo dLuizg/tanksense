@@ -1,15 +1,31 @@
+# pubspec.yaml
+
+# Configuração do projeto Dart/Flutter
 name: tanksense
 description: Sistema TankSense - Monitoramento de Tanque
 
+# Define a versão do SDK Dart compatível
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
+# Dependências principais do projeto
 dependencies:
+  # LÓGICA: Driver MySQL para conexão com banco de dados relacional
   mysql1: ^0.20.0
+  
+  # LÓGICA: Cliente HTTP para comunicação com APIs externas (Firebase)
   http: ^1.1.0
+  
+  # LÓGICA: Biblioteca de internacionalização para formatação de datas/números
   intl: ^0.18.0
+  
+  # LÓGICA: Cliente MySQL alternativo para operações de banco de dados
   mysql_client: ^0.0.27
   
+# Dependências de desenvolvimento (apenas para testes e qualidade de código)
 dev_dependencies:
+  # LÓGICA: Conjunto de regras de lint para manter qualidade do código
   lints: ^3.0.0
+  
+  # LÓGICA: Framework de testes para testes unitários e de integração
   test: ^1.24.0
