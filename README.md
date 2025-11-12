@@ -207,6 +207,7 @@ Henrique de Oliveira Molinari        | RA: 25001176
 Luiz Gustavo Paliares Diniz          | RA: 25001239
 Matteo Enrico Ferri Bonvento         | RA: 25000081
 Nicolas Victorio Buciolli De Souza   | RA: 25000408
+
 ---
 
 **⚠️ Nota**: Este sistema requer a integração com o protótipo físico para funcionamento completo. Sem o hardware, apenas as funcionalidades de gestão estarão disponíveis.
