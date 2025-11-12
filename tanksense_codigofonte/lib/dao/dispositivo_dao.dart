@@ -1,11 +1,18 @@
 // lib/dao/dispositivo_dao.dart
+
 import '../models/database_connection.dart';
 import '../models/dispositivo.dart';
 
+// Classe responsável pelas operações de banco referentes à entidade Dispositivo
+// POO: Aplica o princípio da responsabilidade única (SRP) — lida apenas com dispositivos
 class DispositivoDao {
+  // Conexão injetada — Injeção de Dependência promove desacoplamento
   final DatabaseConnection db;
+
   DispositivoDao(this.db);
 
+  // Busca todos os registros de dispositivos no banco
+  // LÓGICA: converte cada linha do banco em um objeto Dispositivo
   Future<List<Dispositivo>> fetchAll() async {
     final dispositivos = <Dispositivo>[];
     try {
@@ -23,6 +30,8 @@ class DispositivoDao {
     return dispositivos;
   }
 
+  // Insere um novo dispositivo e retorna o objeto com o ID gerado
+  // POO: Encapsulamento — lógica de escrita isolada dentro da classe DAO
   Future<Dispositivo?> insert(Dispositivo dispositivo) async {
     try {
       var resultado = await db.connection!.query(
