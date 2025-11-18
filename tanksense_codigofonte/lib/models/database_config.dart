@@ -54,6 +54,6 @@ final DatabaseConfig databaseConfig = DatabaseConfig(
   host: 'localhost',
   porta: 3306,
   usuario: 'root',
-  senha: '296q',
+  senha: '@#Hrk15072006',
   dbName: 'tanksense',
 );
