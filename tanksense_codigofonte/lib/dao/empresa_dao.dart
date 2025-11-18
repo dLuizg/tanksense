@@ -1,7 +1,7 @@
 // lib/dao/empresa_dao.dart
 
 import 'base_dao.dart';
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../models/empresa.dart';
 
 // DAO responsável pelas operações de banco da entidade Empresa

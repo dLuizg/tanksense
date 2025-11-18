@@ -1,5 +1,5 @@
 // lib/dao/base_dao.dart
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../models/entidade_base.dart';
 
 // Classe abstrata genérica que define o comportamento padrão de todos os DAOs.

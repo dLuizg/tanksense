@@ -2,7 +2,7 @@
 // Classe responsável por realizar as operações de acesso a dados (DAO) da entidade Tanque.
 // Essa classe gerencia a leitura e gravação de dados da tabela 'tanque' no banco MySQL.
 
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../models/tanque.dart';
 
 class TanqueDao {

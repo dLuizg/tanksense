@@ -1,4 +1,4 @@
-// lib/database/database_setup.dart
+// lib/models/database/database_setup.dart
 
 // POO: Importando a definição da classe 'DatabaseConnection', da qual esta classe depende.
 import 'database_connection.dart';

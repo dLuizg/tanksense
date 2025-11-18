@@ -2,7 +2,7 @@
 // Classe responsável pelas operações de acesso a dados (DAO) relacionadas à entidade Usuario.
 // Contém métodos para leitura e inserção de registros na tabela 'usuario' do banco de dados.
 
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../models/usuario.dart';
 
 class UsuarioDao {

@@ -1,4 +1,4 @@
-// lib/database/database_config.dart
+// lib/models/database/database_config.dart
 
 // POO: Definição da classe 'DatabaseConfig'.
 // Esta classe serve como um "molde" (modelo de dados) para agrupar

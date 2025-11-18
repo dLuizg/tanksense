@@ -1,13 +1,13 @@
-// lib/models/menu.dart
+// lib/view/menu.dart
 import 'dart:io';
-import 'service_locator.dart';
-import 'empresa.dart';
-import 'local.dart';
-import 'dispositivo.dart';
-import 'sensor.dart';
-import 'tanque.dart';
-import 'usuario.dart';
-import 'producao.dart';
+import '../core/di/service_locator.dart';
+import '../models/empresa.dart';
+import '../models/local.dart';
+import '../models/dispositivo.dart';
+import '../models/sensor.dart';
+import '../models/tanque.dart';
+import '../models/usuario.dart';
+import '../models/producao.dart';
 import '../controllers/data_controller.dart';
 
 // POO: Classe Menu que gerencia a interface de usuário e orquestra toda a aplicação

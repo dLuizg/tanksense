@@ -1,6 +1,6 @@
 // lib/dao/dispositivo_dao.dart
 
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../models/dispositivo.dart';
 
 // Classe responsável pelas operações de banco referentes à entidade Dispositivo

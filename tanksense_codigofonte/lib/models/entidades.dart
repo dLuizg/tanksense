@@ -1,4 +1,4 @@
-// lib/controllers/entidades.dart
+// lib/models/entidades.dart
 
 // POO: Definição da classe. Isto é um "molde" para criar objetos
 // que simulam uma conexão com o banco de dados.

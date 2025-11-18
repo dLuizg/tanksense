@@ -9,7 +9,7 @@ import '../services/leitura_service.dart';
 import '../services/producao_service.dart';
 
 // POO: Importando o ServiceLocator (um Padrão de Projeto para Injeção de Dependência).
-import '../models/service_locator.dart';
+import '../core/di/service_locator.dart';
 
 // POO: Definição da classe 'DataController'.
 class DataController {

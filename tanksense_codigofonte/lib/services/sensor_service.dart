@@ -1,6 +1,6 @@
 // lib/services/sensor_service.dart
 import '../models/sensor.dart';
-import '../models/database_connection.dart';
+import '../models/database/database_connection.dart';
 import '../dao/sensor_dao.dart';
 
 class SensorService {

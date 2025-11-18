@@ -1,14 +1,14 @@
-// lib/database/database_connection.dart
+// lib/models/database/database_connection.dart
 
 import 'package:mysql1/mysql1.dart';
 import 'database_config.dart';
-import 'empresa.dart';
-import 'local.dart';
-import 'tanque.dart';
-import 'dispositivo.dart';
-import 'sensor.dart';
-import 'leitura.dart';
-import 'usuario.dart';
+import '../empresa.dart';
+import '../local.dart';
+import '../tanque.dart';
+import '../dispositivo.dart';
+import '../sensor.dart';
+import '../leitura.dart';
+import '../usuario.dart';
 
 // POO: Classe que gerencia a conexão com o banco de dados MySQL
 // Encapsula toda a lógica de comunicação com o banco de dados
