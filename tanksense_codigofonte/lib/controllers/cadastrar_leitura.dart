@@ -1,3 +1,5 @@
+// lib/controllers/casdastrar_leitura.dart
+
 // POO: Importando a classe 'Leitura', que define o modelo de dados (um objeto).
 import '../models/leitura.dart';
 // POO: Importando a classe 'LeituraService', que encapsula a regra de negócio.

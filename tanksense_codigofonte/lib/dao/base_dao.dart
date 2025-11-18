@@ -1,4 +1,4 @@
-// dao/base_dao.dart
+// lib/dao/base_dao.dart
 import '../models/database_connection.dart';
 import '../models/entidade_base.dart';
 

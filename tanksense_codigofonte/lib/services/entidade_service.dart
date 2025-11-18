@@ -1,4 +1,4 @@
-// services/entidade_service.dart
+// lib/services/entidade_service.dart
 import '../models/database_connection.dart';
 import '../models/entidade_base.dart';
 import '../models/empresa.dart';
