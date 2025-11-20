@@ -1,7 +1,7 @@
 // lib/services/empresa_service.dart
 
 import '../models/empresa.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/empresa_dao.dart';
 
 // Classe de serviço para Empresa

@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/leitura.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/leitura_dao.dart';
 
 class LeituraService {

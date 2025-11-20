@@ -1,6 +1,6 @@
 // lib/services/tanque_service.dart
 import '../models/tanque.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/tanque_dao.dart';
 
 class TanqueService {

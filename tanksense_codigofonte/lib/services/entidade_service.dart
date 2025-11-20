@@ -1,5 +1,5 @@
 // lib/services/entidade_service.dart
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../models/entidade_base.dart';
 import '../models/empresa.dart';
 import '../models/local.dart';

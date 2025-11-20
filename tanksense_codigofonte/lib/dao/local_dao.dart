@@ -1,6 +1,6 @@
 // lib/dao/local_dao.dart
 
-import '../models/database/database_connection.dart';
+import 'database/database_connection.dart';
 import '../models/local.dart';
 import 'base_dao.dart';
 

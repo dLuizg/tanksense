@@ -2,7 +2,7 @@
 // Classe responsável por realizar operações de acesso a dados (DAO) da entidade Sensor.
 // Contém métodos para buscar e inserir sensores no banco de dados MySQL.
 
-import '../models/database/database_connection.dart';
+import 'database/database_connection.dart';
 import '../models/sensor.dart';
 
 class SensorDao {

@@ -1,10 +1,10 @@
 // bin/main.dart
 
-import 'package:tanksense/models/database/database_config.dart';
-import 'package:tanksense/models/database/database_connection.dart';
+import 'package:tanksense/dao/database/database_config.dart';
+import 'package:tanksense/dao/database/database_connection.dart';
 import 'package:tanksense/core/di/service_locator.dart';
 import 'package:tanksense/view/menu.dart';
-import 'package:tanksense/models/database/database_setup.dart';
+import 'package:tanksense/dao/database/database_setup.dart';
 
 // Ponto de entrada principal da aplicação - função assíncrona
 Future<void> main() async {

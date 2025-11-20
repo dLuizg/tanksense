@@ -1,5 +1,5 @@
 // lib/dao/producao_dao.dart
-import '../models/database/database_connection.dart';
+import 'database/database_connection.dart';
 import '../models/producao.dart';
 import 'base_dao.dart';
 

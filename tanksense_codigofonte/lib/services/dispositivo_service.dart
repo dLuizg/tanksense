@@ -1,6 +1,6 @@
 // lib/services/dispositivo_service.dart
 import '../models/dispositivo.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/dispositivo_dao.dart';
 
 class DispositivoService {

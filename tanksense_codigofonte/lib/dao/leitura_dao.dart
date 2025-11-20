@@ -1,5 +1,5 @@
 // lib/dao/leitura_dao.dart
-import '../models/database/database_connection.dart';
+import 'database/database_connection.dart';
 import '../models/leitura.dart';
 
 // Classe responsável pelas operações de banco da entidade Leitura

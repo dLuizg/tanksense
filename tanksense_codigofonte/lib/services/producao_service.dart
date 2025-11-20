@@ -1,7 +1,7 @@
 // lib/services/producao_service.dart
 import '../models/producao.dart';
 import '../models/leitura.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/producao_dao.dart';
 
  // Injeção de dependência: o DAO depende da conexão com o banco

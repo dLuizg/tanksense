@@ -1,7 +1,7 @@
 // lib/services/local_service.dart
 
 import '../models/local.dart';
-import '../models/database/database_connection.dart';
+import '../dao/database/database_connection.dart';
 import '../dao/local_dao.dart';
 
 // Serviço responsável pela regra de negócio e validação da entidade "Local".

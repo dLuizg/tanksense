@@ -1,6 +1,6 @@
 // lib/models/service_locator.dart
 
-import '../../models/database/database_connection.dart';
+import '../../dao/database/database_connection.dart';
 
 // DAOs
 import '../../dao/empresa_dao.dart';
