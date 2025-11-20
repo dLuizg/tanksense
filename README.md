@@ -17,21 +17,17 @@ tanksense/
 │   │   └── di/
 │   │       └── service_locator.dart  # Injeção de dependências
 │   ├── models/                   # Camada de Modelos (Entidades)
-│   │   ├── database/             # Configuração do banco
-│   │   │   ├── database_config.dart
-│   │   │   ├── database_connection.dart
-│   │   │   └── database_setup.dart
 │   │   ├── dispositivo.dart      # Entidade Dispositivo
 │   │   ├── empresa.dart          # Entidade Empresa
 │   │   ├── entidade_base.dart    # Classe base para entidades
 │   │   ├── leitura.dart          # Entidade Leitura
 │   │   ├── local.dart            # Entidade Local
+│   │   ├── perfil_usuario.dart   # Classe utilitária
 │   │   ├── producao.dart         # Entidade Produção
 │   │   ├── sensor.dart           # Entidade Sensor
 │   │   ├── tanque.dart           # Entidade Tanque
 │   │   └── usuario.dart          # Entidade Usuário
 │   ├── controllers/              # Camada de Controladores
-│   │   ├── cadastrar_leitura_controller.dart
 │   │   ├── consulta_controller.dart
 │   │   ├── data_controller.dart
 │   │   ├── gestao_equipamentos_controller.dart
@@ -41,6 +37,7 @@ tanksense/
 │   ├── services/                 # Camada de Serviços (Lógica de Negócio)
 │   │   ├── dispositivo_service.dart
 │   │   ├── empresa_service.dart
+│   │   ├── entidade_service.dart
 │   │   ├── leitura_service.dart
 │   │   ├── local_service.dart
 │   │   ├── producao_service.dart
@@ -48,6 +45,10 @@ tanksense/
 │   │   ├── tanque_service.dart
 │   │   └── usuario_service.dart
 │   ├── dao/                      # Data Access Objects
+│   │   ├── database/             # Configuração do banco
+│   │   │   ├── database_config.dart
+│   │   │   ├── database_connection.dart
+│   │   │   └── database_setup.dart
 │   │   ├── base_dao.dart         # DAO base com operações genéricas
 │   │   ├── dispositivo_dao.dart
 │   │   ├── empresa_dao.dart
